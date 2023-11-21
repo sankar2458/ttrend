@@ -13,5 +13,17 @@ environment{
                 sh 'mvn clean deploy'
             }
         }
+        stage('SonarQube analysis') {
+            environment {
+                scannerHome = tool 'Siva-SonarScanner'
+            }
+            steps { 
+                echo '------------------- Sonar Started -------------'
+                withSonarQubeEnv('SonarQube-Server') { // If you have configured more than one global server connection, you can specify its name
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+            echo '------------------- Sonar Analysis Completed -------------'
+            }
+        }
     }
 }
