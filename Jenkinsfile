@@ -9,11 +9,22 @@ environment{
 }
     stages {
         stage('build'){
-            steps{
-                sh 'mvn clean deploy'
+            steps {
+                echo '------------------- Build Started -------------'
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo '------------------- Build Completed -------------'
             }
         }
-        stage('SonarQube analysis') {
+
+        stage('Unit Test') {
+            steps{
+                echo '------------------- Unit Test Started -------------'
+                sh 'mvn surefire-report:report'
+                echo '------------------- Unit Test Completed -------------'
+            }
+        }
+
+        stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'Siva-SonarScanner'
             }
